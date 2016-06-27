@@ -26,9 +26,9 @@ View completeCSV = csvView.append(csvView2, csvView3, csvView4);`
 View subView = csvView.select("Duration", "Start date", "End date");
 ```
 
-#### select columns by name
+#### filter by value of column
 ```java
-View subView = csvView.select("Duration", "Start date", "End date");
+View filteredView = csvView.filter(csvView.column("Type"), value -> value.equals("Registered"));
 ```
 
 #### add a calculated columns
