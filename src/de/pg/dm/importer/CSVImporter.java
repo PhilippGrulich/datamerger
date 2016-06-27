@@ -19,7 +19,7 @@ public class CSVImporter extends AbstractView {
 
     private final String seperator;
     private String path;
-    private BufferedReader reader;
+
 
     public CSVImporter(String path, String seperator) {
         this.path = path;
@@ -28,17 +28,20 @@ public class CSVImporter extends AbstractView {
     }
 
 
-    private void loadCSV() {
+    private BufferedReader loadCSV() {
 
         try {
+            BufferedReader reader;
             reader = new BufferedReader(new FileReader(path));
-            readHeader();
+            readHeader(reader);
+            return reader;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    private void readHeader() throws IOException {
+    private void readHeader(BufferedReader reader) throws IOException {
         String headerline = reader.readLine();
         String[] columnNames = headerline.split(this.seperator);
         for (String columnName : columnNames) {
@@ -49,35 +52,47 @@ public class CSVImporter extends AbstractView {
 
     @Override
     public Iterator<Row> iterator() {
-        return new Iterator<Row>() {
+        return new CSVIterator();
+    }
+
+    private class CSVIterator implements Iterator<Row> {
 
 
-            public String line;
+        String line;
+        BufferedReader reader = loadCSV();
 
-            @Override
-            public boolean hasNext() {
-                try {
-                    line = reader.readLine();
-                    return line != null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return false;
+        CSVIterator() {
+            try {
+                line = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
-            @Override
-            public Row next() {
-                String[] items = line.split(seperator);
-                Row inputRow = new Row();
-                for (String item : items) {
-                    inputRow.addItem(item);
-                }
-                Row resultRow = CSVImporter.super.apply(inputRow);
-                if (resultRow == null && hasNext())
-                    return next();
-                return resultRow;
+        @Override
+        public boolean hasNext() {
+            return line != null;
+        }
 
+        @Override
+        public Row next() {
+            String[] items = line.split(seperator);
+            Row inputRow = new Row();
+            for (int i = 0; i < items.length; i++) {
+                inputRow.addItem(column(i).getName(), items[i]);
             }
-        };
+            try {
+                line = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return inputRow;
+
+        }
+
+
+        ;
+
+
     }
 }

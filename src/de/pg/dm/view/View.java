@@ -1,5 +1,6 @@
 package de.pg.dm.view;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -11,11 +12,13 @@ public interface View extends Iterable<Row> {
     Column column(String columnName);
     Column column(int nr);
 
+    List<Column> getColumns();
+
     View filter(Column column, Function<Object,Boolean> filterFunction);
 
-    View join(View otherView, Column on);
+    View join(View otherView, String onLeft, String onRight);
 
-    View append(View otherView);
+    View append(View... otherViews);
 
     String explane();
 
@@ -24,6 +27,12 @@ public interface View extends Iterable<Row> {
     View delete(Column column);
 
     View select(String... columns);
+
+    View addCalculatedColumn(String column, Function<Row,Object> function);
+
+    long count();
+
+
 
 
 }

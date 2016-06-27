@@ -8,15 +8,13 @@ import java.util.function.Function;
  */
 public class FilteredView extends AbstractView {
     private final Function<Object, Boolean> filterFunction;
-    private final Column column;
+    private final Column filterColumn;
     private final AbstractView root;
-    private final int columnIndex;
 
     public FilteredView(AbstractView root, Column column, Function<Object, Boolean> filterFunction) {
         this.root = root;
-        this.column = column;
+        this.filterColumn = column;
         this.filterFunction = filterFunction;
-        this.columnIndex = root.columns.indexOf(column);
     }
 
     @Override
@@ -29,7 +27,7 @@ public class FilteredView extends AbstractView {
             Row findNextValue(){
                 while(rootIterrator.hasNext()){
                     Row next = rootIterrator.next();
-                    if (filterFunction.apply(next.values.get(columnIndex)))
+                    if (filterFunction.apply(next.getValue(filterColumn.getName())))
                         return next;
                 }
                 return null;
