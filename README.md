@@ -18,7 +18,7 @@ csvView.explain();
 
 #### append multiple CSVs
 ```java
-View completeCSV = csvView.append(csvView2, csvView3, csvView4);`
+View completeCSV = csvView.append(csvView2, csvView3, csvView4);
 ```
 
 #### select columns by name
