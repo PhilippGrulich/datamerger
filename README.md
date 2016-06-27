@@ -52,7 +52,7 @@ View joinedData = leftView.join(rightView, on_left, on_right);
  new CSVOutput(path).write(view);
  ```
 
-#### iterrate over rows
+#### iterate over rows
 ```java
 for(Row row : view){
     for(Column column : view.getColumns())
