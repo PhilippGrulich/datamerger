@@ -47,3 +47,16 @@ View joinedData = leftView.join(rightView, on_left, on_right);
 ```
 
 
+#### write view to csv
+```java
+ new CSVOutput(path).write(view);
+ ```
+
+#### iterrate over rows
+```java
+for(Row row : view){
+    for(Column column : view.getColumns())
+        row.getValue(column);
+}
+````
+
