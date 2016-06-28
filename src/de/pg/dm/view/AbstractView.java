@@ -58,7 +58,7 @@ public abstract class AbstractView implements View {
     }
 
     @Override
-    public String explane() {
+    public String explain() {
         System.out.println(columns.toString());
         return columns.toString();
     }

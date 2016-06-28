@@ -20,7 +20,7 @@ public interface View extends Iterable<Row> {
 
     View append(View... otherViews);
 
-    String explane();
+    String explain();
 
     View rename(String columnName, String newName);
 
